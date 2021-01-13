@@ -9,7 +9,7 @@ PImage    trackImage;
 
 void setup() {
   size(500, 600);
-  trackImage = loadImage("track.png");
+  trackImage = loadImage("../images/track.png");
 }
 
 void draw() {
