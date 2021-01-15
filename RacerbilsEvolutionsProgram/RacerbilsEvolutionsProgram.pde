@@ -1,6 +1,6 @@
 // PopulationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer.
 // Det er meget vigtigt at denne her værdi er minimum 2
-int populationSize = 2;
+int populationSize = 120;
 
 // Denne variabel fortæller antallet af hvor mange frames
 // den genetiske algoritme skal vente med at køre på populationen.

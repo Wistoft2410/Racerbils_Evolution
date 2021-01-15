@@ -1,11 +1,5 @@
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-
-
 class GeneticAlgorithm {
-  final float CONSTANT = 10; // TODO: Hvad skal denne her værdi indeholde?
+  final float CONSTANT = 100; // TODO: Hvad skal denne her værdi indeholde?
 
   // Denne variabel fortæller antallet af hvor mange frames
   // den genetiske algoritme skal vente med at køre på populationen.
@@ -20,9 +14,7 @@ class GeneticAlgorithm {
       println("Efter " + FRAMESTOWAIT + " frames har vi udviklet en ny generation!");
       calculateFitnessValue();
 
-      mating(matingPool());
-
-      //carSystem.CarControllerList = mating(matingPool());
+      carSystem.CarControllerList = mating(matingPool());
     }
   }
 
@@ -59,11 +51,7 @@ class GeneticAlgorithm {
     for (CarController carController : carSystem.CarControllerList) {
       int numberOfClones = ceil(((float) carController.fitnessValue / (float) sumOfFitnessValues) * CONSTANT);
 
-      for (int i = 0; i < numberOfClones; i++) {
-        carController = (CarController) deepCopy(carController);
-
-        matingPool.add(carController);
-      }
+      for (int i = 0; i < numberOfClones; i++) matingPool.add(carController);
     }
 
     return matingPool;
@@ -73,49 +61,52 @@ class GeneticAlgorithm {
     ArrayList<CarController> newGeneration = new ArrayList<CarController>();
 
     for (int i = 0; i < populationSize; i++) {
-      //CarController parent1 = matingPool.get((int) random(matingPool.size()));
-      //CarController parent2 = matingPool.get((int) random(matingPool.size()));
+      CarController parent1 = matingPool.get((int) random(matingPool.size()));
+      CarController parent2 = matingPool.get((int) random(matingPool.size()));
 
-      // TODO: Lav crossover og mutations metoderne
       CarController child = crossOver(parent1, parent2);
 			mutation(child);
 
-      //newGeneration.add(child);
+      newGeneration.add(child);
     }
 
     return newGeneration;
   }
 
-  // TODO: Her skal selve cross over funktionaliteten foregå:
-  //private CarController crossOver(CarController parent1, CarController parent2) {
-  //}
+  private CarController crossOver(CarController parent1, CarController parent2) {
+    CarController carController = new CarController();
+    NeuralNetwork hjerne = carController.hjerne;
 
+    // Tage første halvdel af den første forældres gener
+    for (int i = 0; i < hjerne.weights.length / 2; i++) hjerne.weights[i] = parent1.hjerne.weights[i];
 
-  // TODO: Her skal selve mutations funktionaliteten foregå:
+    // Tage anden halvdel af den anden forældres gener
+    for (int i = hjerne.weights.length / 2; i < hjerne.weights.length; i++) hjerne.weights[i] = parent2.hjerne.weights[i];
 
-  //private void mutation(CarController child) {
-  //}
+    // Tage første bias fra den første forældre
+    hjerne.biases[0] = parent1.hjerne.biases[0];
+    // Tage gennemsnittet af forældrenes midterbias
+    hjerne.biases[1] = (parent1.hjerne.biases[1] + parent2.hjerne.biases[1]) / 2;
+    // Tage trejde bias fra den anden forældre
+    hjerne.biases[2] = parent2.hjerne.biases[2];
 
-  // deepCopy er en metode der kan kopiere et objekt fuldstændigt,
-  // hvilket vi skal bruge i forbindelse med matingPool metoden
-  // Vi har metoden her fra: https://www.journaldev.com/17129/java-deep-copy-object
-  private Object deepCopy(Object object) {
-    try {
+    return carController;
+  }
 
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      ObjectOutputStream outputStrm = new ObjectOutputStream(outputStream);
+  private void mutation(CarController child) {
+    // Vi ændrer alle hjernens vægte med en tilfældig værdi mellem -child.varians, og child.varians (eksklusiv).
+    // Dog kun med en sandsynlighed på 1%:
+    for (int i = 0; i < child.hjerne.weights.length; i++) {
+      if ((int) random(1, 101) == 50) {
+        child.hjerne.weights[i] = random(-child.varians, child.varians);
+      }
+    }
 
-      outputStrm.writeObject(object);
-
-      ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-      ObjectInputStream objInputStream = new ObjectInputStream(inputStream);
-
-      return objInputStream.readObject();
-
-    } catch (Exception e) {
-      e.printStackTrace();
-
-      return null;
+    // Vi gør præcis det samme bare for biases:
+    for (int i = 0; i < child.hjerne.biases.length; i++) {
+      if ((int) random(1, 101) == 50) {
+        child.hjerne.biases[i] = random(-child.varians, child.varians);
+      }
     }
   }
 }
