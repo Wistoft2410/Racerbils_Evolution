@@ -7,7 +7,7 @@ class GeneticAlgorithm {
   // Grunden til at vi venter, er så bilerne har tid til at køre rundt
   // og have en chance, så deres fitness værdi kan udregnes retfærdigt
 
-  
+
   public void naturalSelection() {
     // Hvis der er løbet antallet af frames som FRAMESTOWAIT indeholder
     // så vil algoritmens funktionalitet køre
@@ -67,7 +67,7 @@ class GeneticAlgorithm {
       CarController parent2 = matingPool.get((int) random(matingPool.size()));
 
       CarController child = crossOver(parent1, parent2);
-			mutation(child);
+      mutation(child);
 
       newGeneration.add(child);
     }
