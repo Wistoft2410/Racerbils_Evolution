@@ -1,12 +1,12 @@
 // PopulationSize: Hvor mange "controllere" der genereres, controller = bil & hjerne & sensorer.
 // Det er meget vigtigt at denne her værdi er minimum 2
-int populationSize = 120;
+int populationSize = 100;
 
 // Denne variabel fortæller antallet af hvor mange frames
 // den genetiske algoritme skal vente med at køre på populationen.
 // Grunden til at vi venter, er så bilerne har tid til at køre rundt
 // og have en chance, så deres fitness værdi kan udregnes retfærdigt
-int FRAMESTOWAIT = 800;
+int FRAMESTOWAIT = 700;
 
 //CarSystem: Indholder en population af "controllere" 
 CarSystem carSystem = new CarSystem(populationSize);

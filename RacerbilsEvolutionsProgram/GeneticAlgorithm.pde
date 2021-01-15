@@ -1,5 +1,6 @@
 class GeneticAlgorithm {
-  final float CONSTANT = 100; // TODO: Hvad skal denne her værdi indeholde?
+  final float CONSTANT = 100;
+  int numberOfCurrentGenerations = 1;
 
   // Denne variabel fortæller antallet af hvor mange frames
   // den genetiske algoritme skal vente med at køre på populationen.
@@ -11,10 +12,11 @@ class GeneticAlgorithm {
     // Hvis der er løbet antallet af frames som FRAMESTOWAIT indeholder
     // så vil algoritmens funktionalitet køre
     if (frameCount % FRAMESTOWAIT == 0) {
-      println("Efter " + FRAMESTOWAIT + " frames har vi udviklet en ny generation!");
       calculateFitnessValue();
-
       carSystem.CarControllerList = mating(matingPool());
+
+      println("Efter " + FRAMESTOWAIT + " frames har vi udviklet en ny generation, nr. " + numberOfCurrentGenerations);
+      numberOfCurrentGenerations++;
     }
   }
 
