@@ -1,19 +1,26 @@
 import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+
 
 class GeneticAlgorithm {
+  final int CONSTANT = 2; // TODO: Hvad skal denne her værdi indeholde?
+
   // Denne variabel fortæller antallet af hvor mange frames
   // den genetiske algoritme skal vente med at køre på populationen.
   // Grunden til at vi venter, er så bilerne har tid til at køre rundt
   // og have en chance, så deres fitness værdi kan udregnes retfærdigt
   final float FRAMESTOWAIT = 10000;
-  final int CONSTANT = 2; // TODO: Hvad skal denne her værdi indeholde?
 
+  
   public void naturalSelection() {
     // Hvis der er løbet antallet af frames som FRAMESTOWAIT indeholder
     // så vil algoritmens funktionalitet køre
     if (frameCount % FRAMESTOWAIT == 0) {
       calculateFitnessValue();
-      matingPool();
+
+      carSystem.CarControllerList = mating(matingPool());
     }
   }
 
@@ -38,7 +45,7 @@ class GeneticAlgorithm {
   private ArrayList<CarController> matingPool() {
     ArrayList<CarController> matingPool = new ArrayList<CarController>();
 
-    int sumOfFitnessValues;
+    int sumOfFitnessValues = 0;
 
     for (CarController carController : carSystem.CarControllerList) sumOfFitnessValues += carController.fitnessValue;
 
@@ -46,7 +53,7 @@ class GeneticAlgorithm {
       int numberOfClones = (carController.fitnessValue / sumOfFitnessValues) * CONSTANT;
 
       for (int i = 0; i < numberOfClones; i++) {
-        CarController carController = (CarController) deepCopy(carController);
+        carController = (CarController) deepCopy(carController);
 
         matingPool.add(carController);
       }
@@ -55,30 +62,54 @@ class GeneticAlgorithm {
     return matingPool;
   }
 
-private ArrayList<CarController> crossOver(ArrayList<CarController> matingPool) {
-  ArrayList<CarController> newGeneration = new ArrayList<CarController>();
+  private ArrayList<CarController> mating(ArrayList<CarController> matingPool) {
+    ArrayList<CarController> newGeneration = new ArrayList<CarController>();
 
-  for (int i = 0; i < populationSize; i++) {
-    CarController carController = matingPool.get((int) random(matingPool.size()));
+    for (int i = 0; i < populationSize; i++) {
+      // Find to tilfældige forældre fra mating poolen:
+      CarController parent1 = matingPool.get((int) random(matingPool.size()));
+      CarController parent2 = matingPool.get((int) random(matingPool.size()));
+
+      // TODO: Lav crossover og mutations metoderne
+      //CarController child = crossOver(parent1, parent2);
+			//child = mutation(child);
+
+      //newGeneration.add(child);
+    }
+
+    return newGeneration;
   }
 
+  // TODO: Her skal selve cross over funktionaliteten foregå:
 
-  return newGeneration;
-}
+  //private CarController crossOver(CarController parent1, CarController parent2) {
+  //}
+
+
+  // TODO: Her skal selve mutations funktionaliteten foregå:
+
+  //private CarController mutation(CarController child) {
+  //}
 
   // deepCopy er en metode der kan kopiere et objekt fuldstændigt,
   // hvilket vi skal bruge i forbindelse med matingPool metoden
   // Vi har metoden her fra: https://www.journaldev.com/17129/java-deep-copy-object
   private Object deepCopy(Object object) {
     try {
+
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       ObjectOutputStream outputStrm = new ObjectOutputStream(outputStream);
+
       outputStrm.writeObject(object);
+
       ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
       ObjectInputStream objInputStream = new ObjectInputStream(inputStream);
+
       return objInputStream.readObject();
+
     } catch (Exception e) {
       e.printStackTrace();
+
       return null;
     }
   }

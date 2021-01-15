@@ -1,2 +1,4 @@
-
 .DS_Store
+
+# Fjern de der .autosave filer som enten git eller processing laver automatisk xD
+*.autosave
