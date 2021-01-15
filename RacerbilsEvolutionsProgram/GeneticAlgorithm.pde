@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 
 
 class GeneticAlgorithm {
-  final int CONSTANT = 2; // TODO: Hvad skal denne her værdi indeholde?
+  final float CONSTANT = 10; // TODO: Hvad skal denne her værdi indeholde?
 
   // Denne variabel fortæller antallet af hvor mange frames
   // den genetiske algoritme skal vente med at køre på populationen.
@@ -57,15 +57,13 @@ class GeneticAlgorithm {
     for (CarController carController : carSystem.CarControllerList) sumOfFitnessValues += carController.fitnessValue;
 
     for (CarController carController : carSystem.CarControllerList) {
-      int numberOfClones = (carController.fitnessValue / sumOfFitnessValues) * CONSTANT;
+      int numberOfClones = ceil(((float) carController.fitnessValue / (float) sumOfFitnessValues) * CONSTANT);
 
-      println("numberOfClones: " + numberOfClones);
+      for (int i = 0; i < numberOfClones; i++) {
+        carController = (CarController) deepCopy(carController);
 
-      //for (int i = 0; i < numberOfClones; i++) {
-      //  carController = (CarController) deepCopy(carController);
-
-      //  matingPool.add(carController);
-      //}
+        matingPool.add(carController);
+      }
     }
 
     return matingPool;
@@ -75,13 +73,12 @@ class GeneticAlgorithm {
     ArrayList<CarController> newGeneration = new ArrayList<CarController>();
 
     for (int i = 0; i < populationSize; i++) {
-      // Find to tilfældige forældre fra mating poolen:
-      CarController parent1 = matingPool.get((int) random(matingPool.size()));
-      CarController parent2 = matingPool.get((int) random(matingPool.size()));
+      //CarController parent1 = matingPool.get((int) random(matingPool.size()));
+      //CarController parent2 = matingPool.get((int) random(matingPool.size()));
 
       // TODO: Lav crossover og mutations metoderne
-      //CarController child = crossOver(parent1, parent2);
-			//child = mutation(child);
+      CarController child = crossOver(parent1, parent2);
+			mutation(child);
 
       //newGeneration.add(child);
     }
@@ -90,14 +87,13 @@ class GeneticAlgorithm {
   }
 
   // TODO: Her skal selve cross over funktionaliteten foregå:
-
   //private CarController crossOver(CarController parent1, CarController parent2) {
   //}
 
 
   // TODO: Her skal selve mutations funktionaliteten foregå:
 
-  //private CarController mutation(CarController child) {
+  //private void mutation(CarController child) {
   //}
 
   // deepCopy er en metode der kan kopiere et objekt fuldstændigt,
