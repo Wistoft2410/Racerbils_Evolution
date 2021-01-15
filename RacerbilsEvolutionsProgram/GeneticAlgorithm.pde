@@ -20,7 +20,7 @@ class GeneticAlgorithm {
       println("Efter " + FRAMESTOWAIT + " frames har vi udviklet en ny generation!");
       calculateFitnessValue();
 
-      //mating(matingPool());
+      mating(matingPool());
 
       //carSystem.CarControllerList = mating(matingPool());
     }
@@ -59,11 +59,13 @@ class GeneticAlgorithm {
     for (CarController carController : carSystem.CarControllerList) {
       int numberOfClones = (carController.fitnessValue / sumOfFitnessValues) * CONSTANT;
 
-      for (int i = 0; i < numberOfClones; i++) {
-        carController = (CarController) deepCopy(carController);
+      println("numberOfClones: " + numberOfClones);
 
-        matingPool.add(carController);
-      }
+      //for (int i = 0; i < numberOfClones; i++) {
+      //  carController = (CarController) deepCopy(carController);
+
+      //  matingPool.add(carController);
+      //}
     }
 
     return matingPool;
