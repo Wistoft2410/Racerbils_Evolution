@@ -2,11 +2,6 @@ class GeneticAlgorithm {
   final float CONSTANT = 100;
   int numberOfCurrentGenerations = 1;
 
-  // Denne variabel fortæller antallet af hvor mange frames
-  // den genetiske algoritme skal vente med at køre på populationen.
-  // Grunden til at vi venter, er så bilerne har tid til at køre rundt
-  // og have en chance, så deres fitness værdi kan udregnes retfærdigt
-
 
   public void naturalSelection() {
     // Hvis der er løbet antallet af frames som FRAMESTOWAIT indeholder
