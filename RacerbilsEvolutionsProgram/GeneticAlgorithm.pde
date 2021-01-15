@@ -11,17 +11,16 @@ class GeneticAlgorithm {
   // den genetiske algoritme skal vente med at køre på populationen.
   // Grunden til at vi venter, er så bilerne har tid til at køre rundt
   // og have en chance, så deres fitness værdi kan udregnes retfærdigt
-  final float FRAMESTOWAIT = 1000;
+  final float FRAMESTOWAIT = 500;
 
   
   public void naturalSelection() {
     // Hvis der er løbet antallet af frames som FRAMESTOWAIT indeholder
     // så vil algoritmens funktionalitet køre
     if (frameCount % FRAMESTOWAIT == 0) {
-      println("Efter 1000 frames har vi udviklet en ny generation!");
-      //calculateFitnessValue();
+      println("Efter 500 frames har vi udviklet en ny generation!");
+      calculateFitnessValue();
 
-      // DEBUGGING
       //mating(matingPool());
 
       //carSystem.CarControllerList = mating(matingPool());
@@ -43,6 +42,9 @@ class GeneticAlgorithm {
 
       // Her  sætter vi carControllerens fitness værdi:
       carController.fitnessValue = fitnessValue;
+
+      // DEBUGGING
+      println("fitnessValue: " + fitnessValue);
     }
   }
 
