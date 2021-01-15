@@ -3,7 +3,7 @@ int populationSize = 100;
 
 //CarSystem: Indholder en population af "controllere" 
 CarSystem carSystem = new CarSystem(populationSize);
-
+GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
 //trackImage: RacerBanen , Vejen=sort, Udenfor=hvid, Målstreg= 100%grøn 
 PImage trackImage;
 
@@ -19,6 +19,7 @@ void draw() {
   image(trackImage,0,80);  
 
   carSystem.updateAndDisplay();
+  geneticAlgorithm.calculateFitnessValue();
 
   //TESTKODE: Frastortering af dårlige biler, for hver gang der går 200 frame - f.eks. dem der kører uden for banen
   //if (frameCount%200==0) {

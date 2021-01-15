@@ -1,14 +1,12 @@
+import java.io.ByteArrayOutputStream;
+
 class GeneticAlgorithm {
   // Denne variabel fortæller antallet af hvor mange frames
   // den genetiske algoritme skal vente med at køre på populationen.
   // Grunden til at vi venter, er så bilerne har tid til at køre rundt
   // og have en chance, så deres fitness værdi kan udregnes retfærdigt
   final float FRAMESTOWAIT = 10000;
-  final float CONSTANT = 2; // TODO: Hvad skal denne her værdi indeholde?
-
-  GeneticAlgorithm() {
-    FRAMESTOWAIT = 10000;
-  }
+  final int CONSTANT = 2; // TODO: Hvad skal denne her værdi indeholde?
 
   public void naturalSelection() {
     // Hvis der er løbet antallet af frames som FRAMESTOWAIT indeholder
@@ -42,9 +40,9 @@ class GeneticAlgorithm {
 
     int sumOfFitnessValues;
 
-    for (CarController carController : CarControllerList) sumOfFitnessValues += carController.fitnessValue;
+    for (CarController carController : carSystem.CarControllerList) sumOfFitnessValues += carController.fitnessValue;
 
-    for (CarController carController : CarControllerList) {
+    for (CarController carController : carSystem.CarControllerList) {
       int numberOfClones = (carController.fitnessValue / sumOfFitnessValues) * CONSTANT;
 
       for (int i = 0; i < numberOfClones; i++) {
@@ -57,14 +55,16 @@ class GeneticAlgorithm {
     return matingPool;
   }
 
-  //private ArrayList<CarController> crossOver(ArrayList<CarController> matingPool) {
-  //  ArrayList<CarController> newGeneration = new ArrayList<CarController>();
+private ArrayList<CarController> crossOver(ArrayList<CarController> matingPool) {
+  ArrayList<CarController> newGeneration = new ArrayList<CarController>();
 
-  //  matingPool
+  for (int i = 0; i < populationSize; i++) {
+    CarController carController = matingPool.get((int) random(matingPool.size()));
+  }
 
 
-  //  return newGeneration;
-  //}
+  return newGeneration;
+}
 
   // deepCopy er en metode der kan kopiere et objekt fuldstændigt,
   // hvilket vi skal bruge i forbindelse med matingPool metoden
