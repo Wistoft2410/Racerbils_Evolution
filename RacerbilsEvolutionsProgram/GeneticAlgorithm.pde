@@ -15,6 +15,7 @@ class GeneticAlgorithm {
     // så vil algoritmens funktionalitet køre
     if (frameCount % FRAMESTOWAIT == 0) {
       calculateFitnessValue();
+      matingPool();
     }
   }
 
