@@ -11,14 +11,13 @@ class GeneticAlgorithm {
   // den genetiske algoritme skal vente med at køre på populationen.
   // Grunden til at vi venter, er så bilerne har tid til at køre rundt
   // og have en chance, så deres fitness værdi kan udregnes retfærdigt
-  final float FRAMESTOWAIT = 500;
 
   
   public void naturalSelection() {
     // Hvis der er løbet antallet af frames som FRAMESTOWAIT indeholder
     // så vil algoritmens funktionalitet køre
     if (frameCount % FRAMESTOWAIT == 0) {
-      println("Efter 500 frames har vi udviklet en ny generation!");
+      println("Efter " + FRAMESTOWAIT + " frames har vi udviklet en ny generation!");
       calculateFitnessValue();
 
       //mating(matingPool());
@@ -32,19 +31,21 @@ class GeneticAlgorithm {
     for (CarController carController : carSystem.CarControllerList) {
       int clockWiseRotationFrameCounter = (int) carController.sensorSystem.clockWiseRotationFrameCounter;
       int whiteSensorFrameCount = carController.sensorSystem.whiteSensorFrameCount;
+      // Et problem med denne værdi er at den faktisk godt kan blive meget lav, ved brug af snyd.
+      // Bilerne kan jo køre den modsatte vej 😑
       int lapTimeInFrames = carController.sensorSystem.lapTimeInFrames;
 
       // Her laver vi selve udregningen af hver bils fitness værdi.
       // Denne udregning tager hensyn til alle variabler der siger noget om hvor godt bilen "performer".
-      // Vi lægger 1 til i nævneren i udregningen da både whiteSensorFrameCount og lapTimeInFrames kan være 0
-      // teoretisk set. Praktist set så kan de ikke
-      int fitnessValue = clockWiseRotationFrameCounter / (whiteSensorFrameCount + lapTimeInFrames + 1);
+      // Vi lægger 1 til nævneren og derfor bliver vi også nødt til at lægge 1 til tælleren så det bliver pænt.
+      // Grunden til at vi gør det er fordi at whiteSensorFrameCount og lapTimeInFrames kan jo være 0. Og man
+      // kan jo ikke dividere med 0 så derfor lægger vi 1 for en sikkerheds skyld!
+      // Vi lægger også 3x FRAMESTOWAIT til så vi sikrer os at fitnessValue aldrig kommer under 0, i løbet af en generation!
+      // fitnessValue kan mindst blive 1!
+      int fitnessValue = (clockWiseRotationFrameCounter + FRAMESTOWAIT * 3 + 1) / (whiteSensorFrameCount + lapTimeInFrames + 1);
 
-      // Her  sætter vi carControllerens fitness værdi:
+      // Her sætter vi carControllerens fitness værdi:
       carController.fitnessValue = fitnessValue;
-
-      // DEBUGGING
-      println("fitnessValue: " + fitnessValue);
     }
   }
 

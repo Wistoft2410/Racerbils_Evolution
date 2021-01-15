@@ -26,7 +26,13 @@ class SensorSystem {
   //lapTime calculation
   boolean lastGreenDetection;
   int     lastTimeInFrames      = 0;
-  int     lapTimeInFrames       = 10000;
+
+  // Vi sætter den til den samme værdi som FRAMESTOWAIT da det er den maksimale mængde af frames
+  // der kan køre mens en generation er i live. Det giver mening da lapTimeInFrames fortæller hvor mange
+  // frames der er løbet inden en bil er nået over målstregen. Jo lavere værdien er jo bedre.
+  // Dem der har den højeste værdi er de dårligste.
+  // Dem der har FRAMESTOWAIT i værdi har altså ikke nået over målstregen i den tid de var i live!
+  int     lapTimeInFrames       = FRAMESTOWAIT;
 
   void displaySensors() {
     strokeWeight(0.5);
