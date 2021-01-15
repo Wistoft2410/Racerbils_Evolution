@@ -19,7 +19,7 @@ void draw() {
   image(trackImage,0,80);  
 
   carSystem.updateAndDisplay();
-  geneticAlgorithm.calculateFitnessValue();
+  geneticAlgorithm.naturalSelection();
 
   //TESTKODE: Frastortering af dårlige biler, for hver gang der går 200 frame - f.eks. dem der kører uden for banen
   //if (frameCount%200==0) {
